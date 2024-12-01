@@ -5,7 +5,6 @@ locals {
   user_data_check = templatefile("${path.module}/user_data_check.sh", {
     timeout = var.user_data_check_timeout
   })
-  subnets = var.subnets[0]
 }
 
 resource "aws_instance" "ec2_instance" {
@@ -16,7 +15,7 @@ resource "aws_instance" "ec2_instance" {
   iam_instance_profile        = var.iam_role
   key_name                    = var.key_name
   vpc_security_group_ids      = var.security_groups
-  subnet_id                   = local.subnets
+  subnet_id                   = var.subnets[count.index % length(var.subnets)]
   user_data                   = local.user_data
   user_data_replace_on_change = var.user_data_replace_on_change
 }
