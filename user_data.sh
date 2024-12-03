@@ -6,6 +6,12 @@ set -x
 
 start_time=$(date +%s)
 
+echo "Set up hostname"
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+hostnamectl set-hostname $INSTANCE_ID
+echo $INSTANCE_ID > /etc/hostname
+sed -i "s/127.0.0.1 .*/127.0.0.1 $INSTANCE_ID localhost/" /etc/hosts
+
 echo "Checking internet connectivity..."
 max_retries=10
 retry_count=0

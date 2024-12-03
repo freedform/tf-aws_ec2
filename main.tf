@@ -21,8 +21,11 @@ resource "aws_instance" "ec2_instance" {
 }
 
 resource "null_resource" "check_user_data" {
-  depends_on = [aws_instance.ec2_instance]
   count      = var.create_ec2 && var.user_data_check ? var.instance_count : 0
+  depends_on = [aws_instance.ec2_instance]
+  triggers = {
+    instance_id_list = join(",", aws_instance.ec2_instance[*].id)
+  }
   connection {
     type        = var.user_data_check_connection_type
     host        = var.user_data_check_ip == "private" ? aws_instance.ec2_instance[count.index].private_ip : aws_instance.ec2_instance[count.index].public_ip
