@@ -39,6 +39,12 @@ variable "security_groups" {
   default     = null
 }
 
+variable "hostname" {
+  description = "Set an instance hostname, otherwise instance ID is used"
+  type        = string
+  default     = ""
+}
+
 variable "user_data" {
   description = "User data script"
   type        = string

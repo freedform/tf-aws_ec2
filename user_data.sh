@@ -7,10 +7,13 @@ set -x
 start_time=$(date +%s)
 
 echo "Set up hostname"
-INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
-hostnamectl set-hostname $INSTANCE_ID
-echo $INSTANCE_ID > /etc/hostname
-sed -i "s/127.0.0.1 .*/127.0.0.1 $INSTANCE_ID localhost/" /etc/hosts
+instance_hostname=${hostname}
+if [ -z "$instance_hostname" ]; then
+  instance_hostname=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+fi
+hostnamectl set-hostname $instance_hostname
+echo $instance_hostname > /etc/hostname
+sed -i "s/127.0.0.1 .*/127.0.0.1 $instance_hostname localhost/" /etc/hosts
 
 echo "Checking internet connectivity..."
 max_retries=10

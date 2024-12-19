@@ -1,5 +1,6 @@
 locals {
   user_data = templatefile("${path.module}/user_data.sh", {
+    hostname         = var.hostname
     user_data_script = var.user_data
   })
   user_data_check = templatefile("${path.module}/user_data_check.sh", {
