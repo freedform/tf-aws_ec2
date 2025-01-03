@@ -3,6 +3,7 @@
 timeout=${timeout}
 
 end=$((SECONDS + timeout))
+
 while [ $SECONDS -lt $end ]; do
   if [ -f /var/log/user_data.finish ]; then
     echo "User data completed successfully"
