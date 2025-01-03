@@ -1,4 +1,5 @@
 #!/bin/bash
+
 timeout=${timeout}
 
 end=$((SECONDS + timeout))
