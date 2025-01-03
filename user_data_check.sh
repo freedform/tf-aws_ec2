@@ -1,5 +1,4 @@
 #!/bin/bash
-
 timeout=${timeout}
 
 end=$((SECONDS + timeout))
@@ -9,7 +8,7 @@ while [ $SECONDS -lt $end ]; do
     exit 0
   elif [ -f /var/log/user_data.fail ]; then
     echo "User data has finished with errors"
-    cat /var/log/user-data.log
+    tail -n 15 /var/log/user-data.log
     exit 1
   else
     echo "Waiting for user data script to be completed"
