@@ -2,7 +2,7 @@
 
 # Redirect all output to a log file
 exec > /var/log/user-data.log 2>&1
-set -xe
+set -euxo pipefail
 trap "touch /var/log/user_data.fail" EXIT
 
 start_time=$(date +%s)
