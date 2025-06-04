@@ -9,6 +9,7 @@ locals {
   ]
   user_data_check = templatefile("${path.module}/user_data_check.sh", {
     timeout = var.user_data_check_timeout
+
   })
 }
 
@@ -23,7 +24,7 @@ resource "aws_instance" "ec2_instance" {
   subnet_id                   = var.subnets[count.index % length(var.subnets)]
   user_data_base64            = base64encode(local.user_data[count.index])
   user_data_replace_on_change = var.user_data_replace_on_change
-  http_tokens                 = var.imdsv2
+#  http_tokens                 = var.imdsv2
   tags                        = merge({
     Name = var.instance_count > 1 && var.hostname != "" ? "${var.hostname}-${count.index + 1}" : var.hostname
   }, var.tags)
