@@ -10,7 +10,12 @@ start_time=$(date +%s)
 echo "Set up hostname"
 instance_hostname=${hostname}
 if [ -z "$instance_hostname" ]; then
-  instance_hostname=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+  if [ "${imdsv2}" == "required"]; then
+    IMDS_TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"`
+    instance_hostname=$(curl -H "X-aws-ec2-metadata-token: $IMDS_TOKEN" http://169.254.169.254/latest/meta-data/instance-id)
+  else
+    instance_hostname=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+  fi
 fi
 hostnamectl set-hostname $instance_hostname
 echo $instance_hostname > /etc/hostname

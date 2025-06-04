@@ -115,6 +115,12 @@ variable "tags" {
   default     = {}
 }
 
+variable "imdsv2" {
+  description = "Enables/Disables http token for ec2 meta-data"
+  type        = string
+  default     = "required"
+}
+
 variable "check_internet_connectivity" {
   description = "Check internet connectivity in user-data script"
   type        = bool
